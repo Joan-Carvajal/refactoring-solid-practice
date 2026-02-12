@@ -1,13 +1,22 @@
 package exercise1_notifications;
 
 // import exercise1_notifications.refactored.*;
+
 import exercise1_notifications.refactored.*;
 import exercise1_notifications.refactored.factory.NotificationSenderFactory;
+import exercise1_notifications.refactored.logs.NotificationLogEntry;
+import exercise1_notifications.refactored.logs.NotificationLogger;
+import exercise1_notifications.refactored.service.NotificationService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @Tag("refactoring")
 @ExtendWith(MockitoExtension.class)
@@ -315,86 +324,86 @@ public class NotificationServiceRefactoredTest {
     //// PARTE 7: Tests para NotificationService Refactorizado (Orquestador)
     //// ═══════════════════════════════════════════════════════════════════════════
 
-    //@Nested
-    //@DisplayName("1.7 - NotificationService Refactorizado (Con Inyección de Dependencias)")
-    //class RefactoredNotificationServiceTests {
+    @Nested
+    @DisplayName("1.7 - NotificationService Refactorizado (Con Inyección de Dependencias)")
+    class RefactoredNotificationServiceTests {
 
-    //    @Mock
-    //    private NotificationSender mockSender;
+        @Mock
+        private NotificationSender mockSender;
 
-    //    @Mock
-    //    private NotificationSenderFactory mockFactory;
+        @Mock
+        private NotificationSenderFactory mockFactory;
 
-    //    @Mock
-    //    private NotificationLogger mockLogger;
+        @Mock
+        private NotificationLogger mockLogger;
 
-    //    private NotificationService service;
+        private NotificationService service;
 
-    //    @BeforeEach
-    //    void setUp() {
-    //        // El servicio refactorizado debe recibir sus dependencias por constructor (DIP)
-    //        service = new NotificationService(mockFactory, mockLogger);
-    //    }
+        @BeforeEach
+        void setUp() {
+            // El servicio refactorizado debe recibir sus dependencias por constructor (DIP)
+            service = new NotificationService(mockFactory, mockLogger);
+        }
 
-    //    @Test
-    //    @DisplayName("Debe usar la factory para obtener el sender correcto")
-    //    void shouldUseFactoryToGetSender() {
-    //        // Arrange
-    //        when(mockFactory.createSender("EMAIL")).thenReturn(mockSender);
-    //        when(mockSender.send("test@test.com", "Hello"))
-    //                .thenReturn(NotificationResult.success("Sent"));
+        @Test
+        @DisplayName("Debe usar la factory para obtener el sender correcto")
+        void shouldUseFactoryToGetSender() {
+            // Arrange
+            when(mockFactory.createSender("EMAIL")).thenReturn(mockSender);
+            when(mockSender.send("test@test.com", "Hello"))
+                    .thenReturn(NotificationResult.success("Sent"));
 
-    //        // Act
-    //        service.sendNotification("EMAIL", "test@test.com", "Hello");
+            // Act
+            service.sendNotification("EMAIL", "test@test.com", "Hello");
 
-    //        // Assert
-    //        verify(mockFactory).createSender("EMAIL");
-    //        verify(mockSender).send("test@test.com", "Hello");
-    //    }
+            // Assert
+            verify(mockFactory).createSender("EMAIL");
+            verify(mockSender).send("test@test.com", "Hello");
+        }
 
-    //    @Test
-    //    @DisplayName("Debe loggear las notificaciones enviadas")
-    //    void shouldLogNotifications() {
-    //        // Arrange
-    //        when(mockFactory.createSender("SMS")).thenReturn(mockSender);
-    //        when(mockSender.send(anyString(), anyString()))
-    //                .thenReturn(NotificationResult.success("Sent"));
+        @Test
+        @DisplayName("Debe loggear las notificaciones enviadas")
+        void shouldLogNotifications() {
+            // Arrange
+            when(mockFactory.createSender("SMS")).thenReturn(mockSender);
+            when(mockSender.send(anyString(), anyString()))
+                    .thenReturn(NotificationResult.success("Sent"));
 
-    //        // Act
-    //        service.sendNotification("SMS", "+1234567890", "Test");
+            // Act
+            service.sendNotification("SMS", "+1234567890", "Test");
 
-    //        // Assert
-    //        verify(mockLogger).log(any(NotificationLogEntry.class));
-    //    }
+            // Assert
+            verify(mockLogger).log(any(NotificationLogEntry.class));
+        }
 
-    //    @Test
-    //    @DisplayName("Debe retornar el resultado del sender")
-    //    void shouldReturnSenderResult() {
-    //        // Arrange
-    //        NotificationResult expectedResult = NotificationResult.success("Email sent");
-    //        when(mockFactory.createSender("EMAIL")).thenReturn(mockSender);
-    //        when(mockSender.send(anyString(), anyString())).thenReturn(expectedResult);
+        @Test
+        @DisplayName("Debe retornar el resultado del sender")
+        void shouldReturnSenderResult() {
+            // Arrange
+            NotificationResult expectedResult = NotificationResult.success("Email sent");
+            when(mockFactory.createSender("EMAIL")).thenReturn(mockSender);
+            when(mockSender.send(anyString(), anyString())).thenReturn(expectedResult);
 
-    //        // Act
-    //        NotificationResult result = service.sendNotification("EMAIL", "a@b.com", "Hi");
+            // Act
+            NotificationResult result = service.sendNotification("EMAIL", "a@b.com", "Hi");
 
-    //        // Assert
-    //        assertThat(result).isEqualTo(expectedResult);
-    //    }
+            // Assert
+            assertThat(result).isEqualTo(expectedResult);
+        }
 
-    //    @Test
-    //    @DisplayName("Debe manejar excepciones de la factory gracefully")
-    //    void shouldHandleFactoryExceptions() {
-    //        // Arrange
-    //        when(mockFactory.createSender("INVALID"))
-    //                .thenThrow(new IllegalArgumentException("Unknown type"));
+        @Test
+        @DisplayName("Debe manejar excepciones de la factory gracefully")
+        void shouldHandleFactoryExceptions() {
+            // Arrange
+            when(mockFactory.createSender("INVALID"))
+                    .thenThrow(new IllegalArgumentException("Unknown type"));
 
-    //        // Act
-    //        NotificationResult result = service.sendNotification("INVALID", "test", "msg");
+            // Act
+            NotificationResult result = service.sendNotification("INVALID", "test", "msg");
 
-    //        // Assert
-    //        assertThat(result.isSuccess()).isFalse();
-    //        assertThat(result.getMessage()).containsIgnoringCase("unknown");
-    //    }
-    //}
+            // Assert
+            assertThat(result.isSuccess()).isFalse();
+            assertThat(result.getMessage()).containsIgnoringCase("unknown");
+        }
+    }
 }

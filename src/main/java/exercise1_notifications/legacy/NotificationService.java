@@ -1,5 +1,8 @@
 package exercise1_notifications.legacy;
 
+import exercise1_notifications.refactored.factory.NotificationSenderFactory;
+import exercise1_notifications.refactored.logs.NotificationLogger;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +11,9 @@ public class NotificationService {
     
     // Almacén de logs (debería estar en otra clase - viola SRP)
     private List<String> notificationLogs = new ArrayList<>();
-    
+
+
+
     /**
      * Método principal que envía notificaciones.
      *
