@@ -1,11 +1,11 @@
 package exercise2_orders;
 
-// import exercise2_orders.refactored.model.*;
-// import exercise2_orders.refactored.discount.*;
-// import exercise2_orders.refactored.repository.*;
-// import exercise2_orders.refactored.validator.*;
-// import exercise2_orders.refactored.tax.*;
-// import exercise2_orders.refactored.*;
+ import exercise2_orders.refactored.model.*;
+ import exercise2_orders.refactored.discount.*;
+ import exercise2_orders.refactored.repository.*;
+ import exercise2_orders.refactored.validator.*;
+ import exercise2_orders.refactored.tax.*;
+ import exercise2_orders.refactored.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
@@ -34,53 +34,53 @@ public class OrderProcessorRefactoredTest {
     // PARTE 1: Tests para el Modelo de Dominio
     // ═══════════════════════════════════════════════════════════════════════════
     
-    //@Nested
-    //@DisplayName("2.1 - Modelo de Dominio (Order, OrderItem, Customer)")
-    //class DomainModelTests {
+    @Nested
+    @DisplayName("2.1 - Modelo de Dominio (Order, OrderItem, Customer)")
+    class DomainModelTests {
 
-    //    @Test
-    //    @DisplayName("OrderItem debe calcular su total correctamente")
-    //    void orderItemShouldCalculateTotal() {
-    //        OrderItem item = new OrderItem("Laptop", new BigDecimal("999.99"), 2);
+        @Test
+        @DisplayName("OrderItem debe calcular su total correctamente")
+        void orderItemShouldCalculateTotal() {
+            OrderItem item = new OrderItem("Laptop", new BigDecimal("999.99"), 2);
 
-    //        assertThat(item.getName()).isEqualTo("Laptop");
-    //        assertThat(item.getPrice()).isEqualByComparingTo(new BigDecimal("999.99"));
-    //        assertThat(item.getQuantity()).isEqualTo(2);
-    //        assertThat(item.getTotal()).isEqualByComparingTo(new BigDecimal("1999.98"));
-    //    }
+            assertThat(item.getName()).isEqualTo("Laptop");
+            assertThat(item.getPrice()).isEqualByComparingTo(new BigDecimal("999.99"));
+            assertThat(item.getQuantity()).isEqualTo(2);
+            assertThat(item.getTotal()).isEqualByComparingTo(new BigDecimal("1999.98"));
+        }
 
-    //    @Test
-    //    @DisplayName("Order debe calcular subtotal de todos los items")
-    //    void orderShouldCalculateSubtotal() {
-    //        List<OrderItem> items = Arrays.asList(
-    //                new OrderItem("Laptop", new BigDecimal("1000"), 1),
-    //                new OrderItem("Mouse", new BigDecimal("50"), 2)
-    //        );
+        @Test
+        @DisplayName("Order debe calcular subtotal de todos los items")
+        void orderShouldCalculateSubtotal() {
+            List<OrderItem> items = Arrays.asList(
+                    new OrderItem("Laptop", new BigDecimal("1000"), 1),
+                    new OrderItem("Mouse", new BigDecimal("50"), 2)
+            );
 
-    //        Customer customer = new Customer("C001", "John Doe", CustomerType.REGULAR);
-    //        Order order = new Order("ORD-001", customer, items);
+            Customer customer = new Customer("C001", "John Doe", CustomerType.REGULAR);
+            Order order = new Order("ORD-001", customer, items);
 
-    //        assertThat(order.getSubtotal()).isEqualByComparingTo(new BigDecimal("1100"));
-    //    }
+            assertThat(order.getSubtotal()).isEqualByComparingTo(new BigDecimal("1100"));
+        }
 
-    //    @Test
-    //    @DisplayName("Customer debe tener tipo y nombre")
-    //    void customerShouldHaveTypeAndName() {
-    //        Customer customer = new Customer("C001", "John Doe", CustomerType.PREMIUM);
+        @Test
+        @DisplayName("Customer debe tener tipo y nombre")
+        void customerShouldHaveTypeAndName() {
+            Customer customer = new Customer("C001", "John Doe", CustomerType.PREMIUM);
 
-    //        assertThat(customer.getId()).isEqualTo("C001");
-    //        assertThat(customer.getName()).isEqualTo("John Doe");
-    //        assertThat(customer.getType()).isEqualTo(CustomerType.PREMIUM);
-    //    }
+            assertThat(customer.getId()).isEqualTo("C001");
+            assertThat(customer.getName()).isEqualTo("John Doe");
+            assertThat(customer.getType()).isEqualTo(CustomerType.PREMIUM);
+        }
 
-    //    @Test
-    //    @DisplayName("CustomerType enum debe tener los tipos correctos")
-    //    void customerTypeShouldHaveCorrectTypes() {
-    //        assertThat(CustomerType.values())
-    //                .contains(CustomerType.REGULAR, CustomerType.PREMIUM,
-    //                         CustomerType.VIP, CustomerType.EMPLOYEE);
-    //    }
-    //}
+        @Test
+        @DisplayName("CustomerType enum debe tener los tipos correctos")
+        void customerTypeShouldHaveCorrectTypes() {
+            assertThat(CustomerType.values())
+                    .contains(CustomerType.REGULAR, CustomerType.PREMIUM,
+                             CustomerType.VIP, CustomerType.EMPLOYEE);
+        }
+    }
 
     ////// ═══════════════════════════════════════════════════════════════════════════
     ////// PARTE 2: Tests para DiscountStrategy (Strategy Pattern + OCP)
